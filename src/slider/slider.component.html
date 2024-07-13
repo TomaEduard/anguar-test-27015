@@ -1,0 +1,57 @@
+<div
+	[@.disabled]="animationDisabled()" [@slideToggle]="{
+    value: selectedImage(),
+    params: {
+      leaveEnd: animationDirection() === 'right' ? '100%' : '-100%',
+      enterStart: animationDirection() === 'right' ? '-100%' : '100%',
+      hiddenScale: 0.25
+    }
+  }" (@slideToggle.start)="animationEvent('start')" (@slideToggle.done)="animationEvent('done')" class="image"
+>
+	@switch (selectedImage()) {
+		@case (1) {
+			<app-share message="Hey, check out this cool image of a frog">
+				<img src="/assets/1.jpg" alt="A neon frog"/>
+			</app-share>
+		}
+		@case (2) {
+			<app-share message="Hey, check out this cool image of a dog on a surfboard">
+				<img src="/assets/2.jpg" alt="A dog on a surfboard"/>
+			</app-share>
+		}
+		@case (3) {
+			<app-share message="Hey, check out this cool image of a chinchilla with sunglasses">
+				<img src="/assets/3.jpg" alt="A chinchilla with sunglasses"/>
+			</app-share>
+		}
+		@case (4) {
+			<app-share message="Hey, check out this cool image of a cool cat wearing a jacket">
+				<img src="/assets/4.jpg" alt="A cool cat wearing a jacket"/>
+			</app-share>
+		}
+	}
+</div>
+
+<nav>
+	<button
+		(click)="previous()" [disabled]="this.selectedImage() === 1"
+	>
+		Previous Image
+	</button>
+	<button
+		(click)="next()" [disabled]="this.selectedImage() === 4"
+	>
+		Next Image
+	</button>
+</nav>
+
+<ng-template #imageTmp let-image>
+	<img [src]="'/assets/' + image + '.jpg'"/>
+</ng-template>
+
+<div class="preload">
+	@for (img of [1, 2, 3, 4]; track img) {
+		<ng-container *ngTemplateOutlet="imageTmp; context: { $implicit: img }"></ng-container>
+	}
+</div>
+
